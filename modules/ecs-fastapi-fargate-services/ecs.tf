@@ -59,7 +59,7 @@ resource "aws_ecs_task_definition" "app" {
   container_definitions = jsonencode([
     {
       name  = "${var.project}-${var.environment}"
-      image = "127215006084.dkr.ecr.us-east-1.amazonaws.com/fast_api_app:latest"
+      image = var.img
       portMappings = [
         {
           containerPort = var.port
