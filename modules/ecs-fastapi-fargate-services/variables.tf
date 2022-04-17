@@ -88,3 +88,12 @@ variable "platform_version" {
   default     = "1.4.0"
   description = "Platform version on which to run your service."
 }
+
+/*
+variable "img" {
+  default     = ""
+  description = "Images name to be pushed/pulled"
+}
+*/
+
+variable "img" { }
