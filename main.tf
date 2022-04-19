@@ -9,9 +9,9 @@
 
 }
  */
- module "ecs-fastapi-fargate-services" {
+ module "ecs-fastapi-ec2-services" {
   // depends_on                = [module.vpc]
-   source                  = "./modules/ecs-fastapi-fargate-services"
+   source                  = "./modules/ecs-fastapi-ec2-services"
    vpc_id                  = var.vpc_id
    environment             = var.environment
    project                 = var.project
@@ -19,6 +19,8 @@
    app_definitions         = local.app_definitions
    health_check_path       = "/LoginWebApp-1/"
    img                     = var.img
+   tag                     = var.tag
+   repos                   = var.repos
 }
  
 

@@ -4,7 +4,13 @@ resource "aws_ecs_cluster" "cluster" {
     name  = "containerInsights"
     value = "enabled"
   }
-  capacity_providers = ["FARGATE", ]
+/*
+  depends_on = [
+    aws_ecr_repository.repo,docker_registry_image.reg-img,aws_ecr_lifecycle_policy.repo-policy
+  ]
+*/
+
+  //capacity_providers = ["managed-ec2-ecs1a","managed-ec2-ecsba","managed-ec2-ecs1c"]
 }
 
 resource "aws_ecs_service" "service" {
@@ -16,8 +22,8 @@ resource "aws_ecs_service" "service" {
   deployment_minimum_healthy_percent = var.deployment_minimum_healthy_percent
   enable_ecs_managed_tags            = "false"
   health_check_grace_period_seconds  = var.health_check_grace_period_seconds
-  launch_type                        = "FARGATE"
-  platform_version                   = var.platform_version
+  launch_type                        = "EC2"
+  //platform_version                   = var.platform_version
   scheduling_strategy                = "REPLICA"
   task_definition                    = aws_ecs_task_definition.app.arn
   enable_execute_command             = true
@@ -35,7 +41,7 @@ resource "aws_ecs_service" "service" {
   }
 
   network_configuration {
-    assign_public_ip = "true"
+   // assign_public_ip = "true"
     //security_groups  = ["sg-0d784290d6fd5c6a9"]
    security_groups  = [aws_security_group.allow-external.id]
     subnets          = data.aws_subnet_ids.public.ids
@@ -52,7 +58,7 @@ resource "aws_ecs_task_definition" "app" {
   execution_role_arn       = aws_iam_role.task.arn
   family                   = "${var.project}-${var.environment}"
   network_mode             = "awsvpc"
-  requires_compatibilities = ["FARGATE"]
+  requires_compatibilities = ["EC2"]
   task_role_arn            = aws_iam_role.task.arn
   cpu                      = var.cpu
   memory                   = var.memory

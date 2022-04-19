@@ -97,3 +97,6 @@ variable "img" {
 */
 
 variable "img" { }
+
+variable "tag" { }
+variable "repos" { }
